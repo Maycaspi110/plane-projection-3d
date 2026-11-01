@@ -69,7 +69,7 @@ What we expected, and what we got:
 - A cut across the trunk should show circles, a cut along it should show stripes, and a slanted cut should show ellipses.
   The images and the video show exactly this.
 - The parts of a plane that are outside the volume are black (0), and the video has one frame per CSV row (120).
-- Speed: the vectorized projection runs at about **230 frames per second** on a 500x500x500 byte volume
+- Speed: the vectorized projection runs at about **200 frames per second** on a 500x500x500 byte volume
   (`python -m scripts.benchmark`). The required minimum is 30 and the target is 100.
 
 ![Cross-sections of the two tree trunk volumes](images/overview.png)
