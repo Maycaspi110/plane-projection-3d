@@ -78,5 +78,12 @@ What we expected, and what we got:
 
 ![Frames taken from the result video](images/video_frames.png)
 
-The result video is `video/tree_trunk_slicer_tilt.mp4`. The other plane files in `data-CSV/` (`trunk_sweep.csv`,
+I also ran the demo on a real MRI scan, the 3D Slicer sample `data-NRRD/MRHead.nrrd`, with the planes in
+`data-CSV/head.csv` (280 frames). The result is `video/head.mp4`.
+
+```bash
+python Ex0.py data-NRRD/MRHead.nrrd data-CSV/head.csv video/head.mp4
+```
+
+The result video of the trunk is `video/tree_trunk_slicer_tilt.mp4`. The other plane files in `data-CSV/` (`trunk_sweep.csv`,
 `trunk_rotate.csv`) and the 8-bit trunk `data-NRRD/tree_trunk.nrrd` are used in the same way.
