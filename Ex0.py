@@ -4,7 +4,7 @@
 
 import sys
 from src.volume_loader import load_volume
-from src.plane_input import read_planes
+from src.plane_input import read_rows
 from src.slicer import project_plane_fast
 from src.video_writer import write_video
 
@@ -27,9 +27,16 @@ def main():
     try:
         volume = load_volume(nrrd_path)
         vmin, vmax = volume.min(), volume.max()   # computed once for all frames
-        planes = read_planes(csv_path)            # whole CSV validated first
+        rows = read_rows(csv_path)
         images = []
-        for numbers in planes:
+        bad = 0
+        for line_number, numbers, error in rows:
+            if error is not None:
+                # not a valid plane: print why, and put an error frame in the video
+                print("Invalid plane, row " + str(line_number) + ": " + error)
+                images.append("row " + str(line_number))
+                bad += 1
+                continue
             start1, start2, b, c = split_plane(numbers)
             images.append(project_plane_fast(volume, start1, start2, b, c))
         write_video(images, vmin, vmax, mp4_path)
@@ -37,6 +44,8 @@ def main():
         print("Error:", error)
         return 1
     print("Done:", len(images), "frames written to", mp4_path)
+    if bad:
+        print(str(bad) + " invalid plane(s) became error frames")
     return 0
 
 

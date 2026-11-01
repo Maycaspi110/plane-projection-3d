@@ -69,3 +69,16 @@ def test_trapezoid_not_on_one_plane_is_error(tmp_path):
     f.write_text("4,0,0,0,10,0,6,0,0,10,10,5\n")
     with pytest.raises(ValueError, match="row 1"):
         read_planes(f)
+
+
+from src.plane_input import read_rows
+
+
+def test_read_rows_keeps_bad_row_with_reason(tmp_path):
+    # read_rows does not raise: the bad row stays in its place and says why
+    f = tmp_path / "mixed.csv"
+    f.write_text(TRIANGLE + "\n1,2,3,4,5,6,7,8,9\n" + TRAPEZOID + "\n")
+    rows = read_rows(f)
+    assert [row[0] for row in rows] == [1, 2, 3]
+    assert rows[0][2] is None and rows[2][2] is None
+    assert rows[1][1] is None and "isosceles" in rows[1][2]
